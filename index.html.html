@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jar for Nithya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Indie Flower', cursive;
+      background: #fffaf3;
+      color: #5c4a3d;
+      text-align: center;
+      padding: 2em;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 0.5em;
+    }
+    button {
+      background: #fce4ec;
+      border: none;
+      padding: 1em 2em;
+      margin: 1em;
+      font-size: 1.2em;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.1s;
+      position: relative;
+    }
+    button:hover:not(:disabled) {
+      background: #f8bbd0;
+      transform: scale(1.05);
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .sparkle {
+      position: relative;
+      animation: sparkleGlow 1.5s infinite alternate;
+    }
+    @keyframes sparkleGlow {
+      0% { box-shadow: 0 0 5px #ffd1dc, 0 0 10px #ffb6c1; }
+      100% { box-shadow: 0 0 15px #ff69b4, 0 0 25px #ffb6c1; }
+    }
+    button[title]:hover::after {
+      content: attr(title);
+      position: absolute;
+      bottom: -2.2em;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #5c4a3d;
+      color: #fffaf3;
+      padding: 0.3em 0.6em;
+      font-size: 0.9em;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+
+    /* Dim background for overlay */
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      z-index: 5;
+    }
+
+    /* Centered message box */
+    #messageBox {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.5em;
+      padding: 1em;
+      background: #fff0f5;
+      border-radius: 10px;
+      max-width: 80%;
+      display: none;
+      animation: popFade 0.5s ease forwards;
+      z-index: 10;
+      white-space: pre-wrap;
+    }
+    #timer {
+      margin-top: 1em;
+      font-size: 1em;
+      color: #a1887f;
+    }
+    @keyframes popFade {
+      0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+      60% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <h1>🎁 Jar for Nithya</h1>
+  <p>For every mood, moment & meltdown—pull a note 💌✨</p>
+
+  <button onclick="openCategory('throwback')">🕰 Open This When You Need a Throwback</button>
+  <button onclick="openCategory('lost')">🧭 Open This When You’re Feeling Lost</button>
+  <button onclick="openCategory('matter')">💖 Open This When You Forget How Much You Matter</button>
+  <button id="birthdayBtn" onclick="openCategory('birthday')">🎂 Open This On Your Birthday</button>
+  <button onclick="openCategory('safePlace')">🛋 Open This When You’re Missing Your Safe Place</button>
+
+  <div id="overlay" onclick="closeMessage()"></div>
+  <div id="messageBox"></div>
+  <div id="timer"></div>
+
+  <script>
+    const messages = {
+      throwback: [
+        "That unexpected New Year sleepover? Still one of the best nights of my life. You’re the first friend to ever stay over. I’ll never forget it. 💫",
+        "We were just classmates in 10th. If someone had told me then that you'd become this important to me… I would’ve laughed. But look at us now.",
+        "Our gang—me, you, Thej, and Thanya—we’re the weirdest blend of logic and delulu. But somehow… it works perfectly.",
+        "I still laugh thinking about all the random plans, cancelled plans, and “wish we were ooo” group moments. Us is a core memory.",
+        "The 50th foundation ceremony? ICONIC. From fighting Kulazhini the cringe to sash supremacy—that was OUR moment. We weren’t just alumni—we were legends.",
+        "“Paper badge that says 2024”... girl, I still gag. You saved that event by just being YOU.",
+        "Remember that alumni group chat we flooded to make sashes a reality? We were on FIRE. Voice messages back to back, just manifesting the parade we deserved.",
+        "Old Students Day 2024 hit harder because I knew 2025 wouldn’t have all 4 of us. That’s why it’s unforgettable.",
+        "Burma & Nila Day Fresh—our classic hangout spots. Forever bookmarked in my head as safe places with you.",
+        "Theja’s surprise party? Pure chaos and pure love. I still can’t believe we pulled that off so smoothly.",
+        "My own surprise bday party—you all thought you fooled me 😏 but I was two steps ahead. Still, it’s one of the BEST birthdays of my life.",
+        "Your birthday? Girl, I literally ruined the surprise by leaving my slippers out and letting my mom accidentally expose me 😂 but it was worth every second.",
+        "From classmate to best friend—that’s a level-up I never saw coming, but now I can't imagine life without."
+      ],
+      lost: [
+        "I know there’ll be lonely days, but remember: you’re never truly alone.",
+        "Every time you doubt yourself, reread this: I believe in you more than words could ever say.",
+        "Please don’t forget—your worth was never based on wins or scholarships. It’s just you.",
+        "I hope you lose yourself in joy, and find yourself in growth.",
+        "Every time you told me “you could do better than this,” I heard it even when I pretended not to.",
+        "The future might be unknown, but I’m certain you’re going to own it.",
+        "✉ Note: When You Miss Home — Hey you, Right now, everything might feel a bit too quiet, a little too unfamiliar. Maybe you’re missing the mess, the laughter, the people—us. That’s completely okay. But listen—home didn’t stay back in India. Home is in your laugh. In the songs you hum while doing nothing. In the way you reply “bruhh” when I send something dumb. It’s in the scent of that perfume you gave me—the one I wear every day. It’s in the flashes of New Year’s Eve memories, our hangouts, the playful chaos, and our shared talent for judging people 😂 It’s in that unexpected night you stayed over… my first ever sleepover with a friend. And above all— Home is in hearts that love you. Which means… a piece of it is always with you. Me. So cry a little, scroll for comfort, binge a silly video—whatever helps. But never forget: You’re tougher than distance, braver than doubt, and stronger than this moment. And when you’re ready to take on everything again, you’ll do it exactly like you always do— Bold. Brilliant. Unstoppable. Just… Nithya. With all my heart, Bava 💙"
+      ],
+      matter: [
+        "I still remember the first time I realized you trusted me. That hit different.",
+        "Thank you for never sugarcoating truth—but never forgetting kindness.",
+        "Thank you for believing in me when I didn’t.",
+        "Thank you for being home when nothing else felt right.",
+        "Thank you for existing in my life. Nothing has been the same since.",
+        "Even your silences were comforting, not awkward.",
+        "You’re bold enough to lead and kind enough to never leave me behind.",
+        "You make me feel understood, even when I don’t say a thing.",
+        "I still remember how your advice helped me with mom. It wasn’t just advice—it was healing. And it still works.",
+        "That perfume set you gave me? I wear it every day. It’s more than a scent—it’s a feeling, a connection, a memory of YOU."
+      ],
+      birthday: [
+        "Hei Nithya!!! If you are opening this message, then it must be your birthday!! HAPPY 19TH BIRTHDAY, YOU BEAUTIFUL SOUL!!! It has been 2 months since you left, but honestly… you still feel weirdly present all the time lmaooo. Popping into my head at random moments like, “ugh, what would Nithya say now” 😤 This year’s gift? 😏 Just wait for it! You are seriously going to LOVE it!! Stay tuned to social media 👀💙 What are your plans?? I am assuming you have a party there with your new friends, some cake-cutting, lots of selfies, and definitely someone playing your favorite songs on repeat!! And hey… Last year’s surprise? Still one of my favorite memories 💙 (Short, sweet, and slightly chaotic—just like you.) Wherever you are and whoever you are with today, Just know I am cheering for you—loudly, dramatically, always. Happy Birthday again, Nithya! Go live your main character day 💫 With all my love ~ Bava"
+      ],
+      safePlace: [
+        "You’re like an anime protagonist I would fangirl over, but you're real, and you're mine.",
+        "This isn’t “goodbye.” It’s just a “see you after you’ve conquered the world.”",
+        "You listen to my silence better than anyone else listens to my words.",
+        "📧 Jar Note: Open Gmail when you're missing me 😤 the feedback mail on our last day? those were real..you are my savior ",
+        "On that final school evening, I typed something I couldn’t say. Not just lines, but real pieces of what we built. That letter holds every emotion I couldn't explain—growth, chaos, comfort, admiration. Search “Bavni Artist” in your inbox. Let those paragraphs hug you again. Let the memories scream louder than silence. And when you’re done? Laugh. Cry. Sigh. But don’t ever forget— You’re still my person. Still my safe place. Still one voice message away. — Bava 💙",
+        "I love that you act all cool and 'ugh' but deep down you're soft pudding."
+      ]
+    };
+
+    const shownMessages = JSON.parse(localStorage.getItem('shownMessages')) || {};
+    const lastOpened = JSON.parse(localStorage.getItem('lastOpened')) || {};
+
+    const birthdayBtn = document.getElementById('birthdayBtn');
+    const today = new Date();
+    const birthdayDate = new Date(today.getFullYear(), 9, 25);
+    if (today < birthdayDate) {
+      birthdayBtn.disabled = true;
+      birthdayBtn.title = "Patience… you’ll see this after Oct 25 😉";
+    }
+    const oneWeekBefore = new Date(birthdayDate);
+    oneWeekBefore.setDate(birthdayDate.getDate() - 7);
+    if (today >= oneWeekBefore && today < birthdayDate) {
+      birthdayBtn.classList.add("sparkle");
+    }
+
+    function openCategory(category) {
+      const now = new Date();
+      const lastTime = new Date(lastOpened[category] || 0);
+      const diff = now - lastTime;
+
+      if (diff < 86400000) {
+        const hoursLeft = Math.ceil((86400000 - diff) / 3600000);
+        document.getElementById('messageBox').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('timer').innerText = `⏳ You can open another message in ${hoursLeft} hour(s).`;
+        return;
+      }
+
+      const available = messages[category].filter(msg => !(shownMessages[category] || []).includes(msg));
+      if (available.length === 0) {
+        shownMessages[category] = [];
+        available.push(...messages[category]);
+      }
+
+      const randomMsg = available[Math.floor(Math.random() * available.length)];
+      shownMessages[category] = [...(shownMessages[category] || []), randomMsg];
+      lastOpened[category] = now;
+
+      localStorage.setItem('shownMessages', JSON.stringify(shownMessages));
+      localStorage.setItem('lastOpened', JSON.stringify(lastOpened));
+
+      const messageBox = document.getElementById('messageBox');
+      const overlay = document.getElementById('overlay');
+      messageBox.style.display = 'block';
+      overlay.style.display = 'block';
+      messageBox.style.animation = 'none';
+      void messageBox.offsetWidth;
+      messageBox.innerText = randomMsg;
+      messageBox.style.animation = 'popFade 0.5s ease forwards';
+
+      document.getElementById('timer').innerText = "Come back tomorrow for another 💌";
+    }
+
+    function closeMessage() {
+      document.getElementById('messageBox').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
